@@ -1,0 +1,113 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Redux in 5 minutes</title>
+        <meta notes="https://youtu.be/oD3miHerQbY">
+    </head>
+    <body>
+        <input id="todo" type="text">
+        <button id="submit-todo">submit</button>
+        <div id="container"></div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.7.2/redux.min.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script>
+
+            // The Reducer is a Finite State Machine which processes dispatched messages.
+            const reducer = Redux.combineReducers({
+                todos: (state = [], action) => {
+                    const newState = Object.assign([], state);
+
+                    // Add Message
+                    if (action.type =='add') {
+                        newState.push(action.item);
+                    }
+
+                    // Remove Message
+                    if (action.type =='remove') {
+                        newState.splice(action.index, 1)
+                    }
+
+                    return newState;
+                }
+            });
+
+
+            // Create Storage Object
+            const store = Redux.createStore(reducer);
+            
+
+            // Rendering function
+            const render = () => {
+                // Get Container element and empty it.
+                const container = document.getElementById('container');
+                container.innerHTML = '';
+
+                const state = store.getState();
+
+                state.todos.forEach((todo, i) => {
+                    const el = document.createElement('div');
+                    el.innerHTML = todo;
+                    container.appendChild(el);
+                    el.onclick = () => {
+                        // Send message to remove
+                        store.dispatch({
+                            type: 'remove',
+                            index: i
+                        });
+                        // Redraw the component
+                        render();
+                    };
+                });
+            };
+
+
+            // Wire up the submit button
+            document.getElementById('submit-todo').onclick = () => {
+                addItem(document.getElementById('todo').value);
+            };
+
+
+            // Wire up the input text box to fire on Enter key press
+            // https://stackoverflow.com/questions/7060750/detect-the-enter-key-in-a-text-input-field
+            document.getElementById('todo').addEventListener("keyup", ({key}) => {
+                if (key == "Enter") {
+                    console.log("Enter key pressed");
+                    addItem();
+                }            
+            });
+
+
+            // Adds item to list and clears the input box.
+            function addItem(data)
+            {
+                // Send message to add item
+                store.dispatch({
+                    type: 'add',
+                    item: data
+                });
+
+                // Redraw the component
+                render();
+
+                // Clear the input 
+                document.getElementById('todo').value = "";
+            }
+
+
+            // Example of populating list Web API using Axios.
+            async function getUsers() 
+            {
+                await axios.get('https://jsonplaceholder.typicode.com/users').then(resp => 
+                {
+                    console.log(resp.data);
+
+                    resp.data.forEach((user, i) => {
+                        addItem(user.name);                        
+                    });               
+                });
+            }
+      
+
+        </script>
+    </body>
+</html>
