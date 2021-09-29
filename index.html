@@ -3,12 +3,21 @@
         <meta charset="UTF-8">
         <title>Redux in 5 minutes</title>
         <meta notes="https://youtu.be/oD3miHerQbY">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     </head>
     <body>
-        <input id="todo" type="text">
-        <button id="submit-todo">submit</button>
-        <button id="load-data">load data</button>
-        <div id="container"></div>
+        <section class="section">
+            <div class="container">
+                <h1 class="title">Todo List</h1>
+                <div class="level">
+                    <input id="todo" type="text" class="input">
+                    <button id="submit-todo" class="button is-light">submit</button>
+                    <button id="load-data" class="button is-dark">load data</button>
+                   
+                </div>
+                <div id="container"></div>
+            </div>
+        </section>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.7.2/redux.min.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script>
