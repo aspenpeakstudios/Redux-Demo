@@ -29,7 +29,7 @@
                         <div class="tile is-child box">
                             <h1 class="title">Todo Form</h1>
                             <div class="level">
-                                <input id="todo" type="text" class="input">
+                                <input id="todo-input" type="text" class="input">
                                 <button id="submit-todo" class="button is-light">submit</button>
                                 <button id="load-data" class="button is-dark">load data</button>                   
                             </div>
@@ -128,7 +128,9 @@
 
             // Wire up the submit button
             document.getElementById('submit-todo').onclick = () => {
-                addItem(document.getElementById('todo').value);
+                const fieldValue = document.getElementById('todo-input').value;
+                console.log(fieldValue);
+                addItem(fieldValue);
             };
 
             document.getElementById('load-data').onclick = () => {
@@ -138,10 +140,13 @@
 
             // Wire up the input text box to fire on Enter key press
             // https://stackoverflow.com/questions/7060750/detect-the-enter-key-in-a-text-input-field
-            document.getElementById('todo').addEventListener("keyup", ({key}) => {
+            document.getElementById('todo-input').addEventListener("keyup", ({key}) => {
                 if (key == "Enter") {
                     console.log("Enter key pressed");
-                    addItem();
+
+                    const fieldValue = document.getElementById('todo-input').value;
+                    console.log(fieldValue);
+                    addItem(fieldValue);
                 }            
             });
 
@@ -149,6 +154,8 @@
             // Adds item to list and clears the input box.
             function addItem(data)
             {
+                console.log(data) 
+
                 // Send message to add item
                 store.dispatch({
                     type: 'add',
@@ -159,7 +166,7 @@
                 render();
 
                 // Clear the input 
-                document.getElementById('todo').value = "";
+                document.getElementById('todo-input').value = "";
             }
 
 
