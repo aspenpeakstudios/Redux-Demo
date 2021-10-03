@@ -7,18 +7,60 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     </head>
     <body>
-        <section class="section">
-            <div class="container">
-                <h1 class="title">Todo List</h1>
-                <div class="level">
-                    <input id="todo" type="text" class="input">
-                    <button id="submit-todo" class="button is-light">submit</button>
-                    <button id="load-data" class="button is-dark">load data</button>
-                   
-                </div>
-                <div id="container"></div>
+      
+        <!-- Header -->
+        <section class="hero is-primary">
+            <div class="hero-body">
+                <p class="title">
+                    Redux and Bulmo.io
+                </p>
             </div>
         </section>
+
+        <!-- Content -->
+        <section class="section">          
+
+            <div class="container">
+
+                <div class="tile is-ancestor">
+
+                    <!-- Left Column -->
+                    <div class="tile is-4 is-vertical is-parent">
+                        <div class="tile is-child box">
+                            <h1 class="title">Todo Form</h1>
+                            <div class="level">
+                                <input id="todo" type="text" class="input">
+                                <button id="submit-todo" class="button is-light">submit</button>
+                                <button id="load-data" class="button is-dark">load data</button>                   
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="tile is-parent">
+                        <div class="tile is-child box">
+                            <div class="title">List</div>
+                            <div id="container"></div>
+                        </div>
+                    </div>
+                </div>    
+                
+                <nav class="level">
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">List Items</p>
+                            <p id="list-item-count" class="title"></p>
+                        </div>
+                    </div>
+                </nav>
+               
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <div class="footer">This is the footer</div>
+
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.7.2/redux.min.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script>
@@ -49,6 +91,9 @@
 
             // Rendering function
             const render = () => {
+
+                /// RENDER THE ITEM LIST
+
                 // Get Container element and empty it.
                 const container = document.getElementById('container');
                 container.innerHTML = '';
@@ -69,6 +114,15 @@
                         render();
                     };
                 });
+
+
+                /// RENDER THE ITEM LIST COUNT
+
+                // Get list item element and empty it.
+                const countContainer = document.getElementById('list-item-count');
+                countContainer.innerHTML = '';
+                countContainer.innerHTML = state.todos.length;
+
             };
 
 
