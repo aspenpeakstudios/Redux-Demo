@@ -58,6 +58,25 @@
                         </div>
                     </div>
                 </nav>
+
+                <nav class="level">
+                    <div class="level-item has-text-centered">
+                        <figure class="image is-128x128">
+                            <img class="is-rounded" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" alt="Unsplash 1"/>
+                        </figure>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <figure class="image is-128x128">
+                           <img class="is-rounded" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" alt="Unsplash 1"/>
+                        </figure>
+                    </div>
+
+                    <div class="level-item has-text-centered">
+                        <figure class="image is-128x128">
+                            <img class="is-rounded" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" alt="Unsplash 1"/>
+                        </figure>
+                    </div>                    
+                </nav>
                
             </div>
         </section>
@@ -84,6 +103,7 @@
         </div>
         
         <script src="modal.js"></script>
+        <script src="data.js"></script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.7.2/redux.min.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -221,18 +241,24 @@
                 });
             }
 
+
             // Example of populating list using custom fake rest server
             async function getTasks()
             {
-                await axios.get('https://my-json-server.typicode.com/aspenpeakstudios/Redux-Demo/tasks').then(resp =>
+                // Retrieve list of Tasks from arbitrary data source.  When available, send tasks to Render Function.
+                const results = await fetchTasks().then(resp =>
                 {
-                    console.log(resp.data);
-
-                    resp.data.forEach((task,i) => {
-                        addItem(task.text);
-                    })
+                    renderTasks(resp.data);
                 });
-            }      
+            }  
+            
+            function renderTasks(model)
+            {
+                model.forEach((task,i) => 
+                {
+                    addItem(task.text);
+                });
+            }
 
         </script>
     </body>
