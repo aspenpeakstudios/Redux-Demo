@@ -8,7 +8,7 @@ https://my-json-server.typicode.com/
 Notes:
 ---------------------------------------------------------------------------------------------------------
 
-10/4/2021:  Learned how to mock up and retrieve data on my-json-server, on a per REPO basis.
+10/4/2021:  Learned how to mock up and retrieve data on my-json-server, on a per REPO basis.  Added Bulma Modal and corresponding JS.
 
 10/3/2021:  Learned about Bulma.io layouts.
 
