@@ -61,19 +61,28 @@
 
                 <nav class="level">
                     <div class="level-item has-text-centered">
-                        <figure class="image is-128x128">
-                            <img class="is-rounded" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" alt="Unsplash 1"/>
+                        <figure class="image is-128x128 is-clipped">
+                            <img class="is-rounded" src="" alt="Unsplash 1"/>
                         </figure>
                     </div>
                     <div class="level-item has-text-centered">
-                        <figure class="image is-128x128">
-                           <img class="is-rounded" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" alt="Unsplash 1"/>
+                        <figure class="image is-128x128 is-clipped">
+                           <img class="is-rounded" src="" alt="Unsplash 2"/>
                         </figure>
                     </div>
-
                     <div class="level-item has-text-centered">
-                        <figure class="image is-128x128">
-                            <img class="is-rounded" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80" alt="Unsplash 1"/>
+                        <figure class="image is-128x128 is-clipped">
+                            <img class="is-rounded" src="=80" alt="Unsplash 3"/>
+                        </figure>
+                    </div>     
+                    <div class="level-item has-text-centered">
+                        <figure class="image is-128x128 is-clipped">
+                            <img class="is-rounded" src="=80" alt="Unsplash 3"/>
+                        </figure>
+                    </div>     
+                    <div class="level-item has-text-centered">
+                        <figure class="image is-128x128 is-clipped">
+                            <img class="is-rounded" src="=80" alt="Unsplash 3"/>
                         </figure>
                     </div>                    
                 </nav>
@@ -258,6 +267,33 @@
                 {
                     addItem(task.text);
                 });
+            }
+
+            async function getImages()
+            {
+                const results = await fetchImages().then(resp =>
+                {            
+                    var images = [];
+                    
+                    var subset = resp.data.results.slice(0, 10).forEach((item) => {
+                        images.push(item.urls.small);                        
+                    });                    
+
+                    console.log(images);
+
+                    renderImages(images);
+                });
+            }
+
+            function renderImages(model)
+            {
+                // Get images 
+                var $imageRow = document.querySelectorAll('figure img');                
+
+                $imageRow.forEach((image, i) =>
+                {
+                    image.src = model[i];
+                })
             }
 
         </script>
