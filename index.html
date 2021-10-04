@@ -2,8 +2,10 @@
     <head>
         <meta charset="UTF-8">
         <title>Redux in 5 minutes</title>
-        <meta notes="https://youtu.be/oD3miHerQbY">
+        <meta redux-tutorial="https://youtu.be/oD3miHerQbY">
         <meta bulma-documentation="https://bulma.io/documentation/layout/level/">
+        <meta data-source="https://my-json-server.typicode.com/">
+        <meta icon-notes="https://ionic.io/ionicons">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     </head>
     <body>
@@ -12,7 +14,10 @@
         <section class="hero is-primary">
             <div class="hero-body">
                 <p class="title">
-                    Redux and Bulmo.io
+                    Redux, Bulmo.io, and My Json Server
+                    <a class="button is-primary modal-button is-large is-pulled-right" data-target="help-modal">
+                        <ion-icon id="help-modal-trigger" name="ice-cream-outline"></ion-icon>
+                    </a>
                 </p>
             </div>
         </section>
@@ -60,9 +65,31 @@
         <!-- Footer -->
         <div class="footer">This is the footer</div>
 
+        <!-- Custom Modals -->
+        <div id="help-modal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Modal Title</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <!-- content -->
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success">Save changes</button>
+                    <button class="button">Cancel</button>
+                </footer>
+            </div>
+        </div>
+        
+        <script src="modal.js"></script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.7.2/redux.min.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
         <script>
 
             // The Reducer is a Finite State Machine which processes dispatched messages.
@@ -125,6 +152,7 @@
 
             };
 
+            /// --------------------------------------------------------------------------------------------------------
 
             // Wire up the submit button
             document.getElementById('submit-todo').onclick = () => {
@@ -133,9 +161,19 @@
                 addItem(fieldValue);
             };
 
+            // Wire up the load data button
             document.getElementById('load-data').onclick = () => {
-                getUsers();
+                //getUsers();
+                getTasks();
             }
+
+           /*  // Wire up the help modal trigger
+            document.getElementById('help-modal-trigger').onclick = () => {
+                var helpModal = document.getElementById('help-modal')
+                helpModal.className += "is-active";
+            } */
+
+            /// -----------------------------------------------------------------------------------------------------------
 
 
             // Wire up the input text box to fire on Enter key press
@@ -182,7 +220,19 @@
                     });               
                 });
             }
-      
+
+            // Example of populating list using custom fake rest server
+            async function getTasks()
+            {
+                await axios.get('https://my-json-server.typicode.com/aspenpeakstudios/Redux-Demo/tasks').then(resp =>
+                {
+                    console.log(resp.data);
+
+                    resp.data.forEach((task,i) => {
+                        addItem(task.text);
+                    })
+                });
+            }      
 
         </script>
     </body>
