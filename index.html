@@ -2,6 +2,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Redux in 5 minutes</title>
+        <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
         <meta redux-tutorial="https://youtu.be/oD3miHerQbY">
         <meta bulma-documentation="https://bulma.io/documentation/layout/level/">
         <meta data-source="https://my-json-server.typicode.com/">
@@ -62,27 +63,37 @@
                 <nav class="level">
                     <div class="level-item has-text-centered">
                         <figure class="image is-128x128 is-clipped">
-                            <img class="is-rounded" src="" alt="Unsplash 1"/>
+                            <a href="">
+                                <img class="is-rounded1 box" src="blank.png" alt="Unsplash 1"/>
+                            </a>
                         </figure>
                     </div>
                     <div class="level-item has-text-centered">
                         <figure class="image is-128x128 is-clipped">
-                           <img class="is-rounded" src="" alt="Unsplash 2"/>
+                            <a href="">
+                                <img class="is-rounded box" src="blank.png" alt="Unsplash 2"/>
+                            </a>
                         </figure>
                     </div>
                     <div class="level-item has-text-centered">
                         <figure class="image is-128x128 is-clipped">
-                            <img class="is-rounded" src="=80" alt="Unsplash 3"/>
+                            <a href="">
+                                <img class="is-rounded1 box" src="blank.png" alt="Unsplash 3"/>
+                            </a>
                         </figure>
                     </div>     
                     <div class="level-item has-text-centered">
                         <figure class="image is-128x128 is-clipped">
-                            <img class="is-rounded" src="=80" alt="Unsplash 3"/>
+                            <a href="">
+                                <img class="is-rounded box" src="blank.png" alt="Unsplash 3"/>
+                            </a>
                         </figure>
                     </div>     
                     <div class="level-item has-text-centered">
                         <figure class="image is-128x128 is-clipped">
-                            <img class="is-rounded" src="=80" alt="Unsplash 3"/>
+                            <a href="">
+                                <img class="is-rounded1 box" src="blank.png" alt="Unsplash 3"/>
+                            </a>
                         </figure>
                     </div>                    
                 </nav>
@@ -196,12 +207,10 @@
                 getTasks();
             }
 
-           /*  // Wire up the help modal trigger
-            document.getElementById('help-modal-trigger').onclick = () => {
-                var helpModal = document.getElementById('help-modal')
-                helpModal.className += "is-active";
-            } */
+            // Load the image containers
+            loadImages();
 
+          
             /// -----------------------------------------------------------------------------------------------------------
 
 
@@ -251,6 +260,8 @@
             }
 
 
+            /// Tasks
+
             // Example of populating list using custom fake rest server
             async function getTasks()
             {
@@ -269,30 +280,63 @@
                 });
             }
 
-            async function getImages()
+
+            /// Images
+
+            async function loadImages()
             {
+
+                // Display loading spinners                
+                var $figures = document.querySelectorAll('figure');   
+                $figures.forEach((figure, i) => 
+                {
+                    figure.classList.add("loader");
+                    figure.classList.add("is-loading");
+                })
+
+                // Make a call out to service to retrieve images
                 const results = await fetchImages().then(resp =>
-                {            
+                {  
                     var images = [];
                     
+                    // Shrink the dataset down and grab only the fields we want.
                     var subset = resp.data.results.slice(0, 10).forEach((item) => {
-                        images.push(item.urls.small);                        
+                        const image = { "link" : item.urls.small, 
+                                        "home" : item.links.html, 
+                                        "description" : item.description ?? item.alt_description, 
+                                        "user" : item.user.name }
+                        images.push(image);
                     });                    
 
                     console.log(images);
 
-                    renderImages(images);
-                });
+                    // Update the image containers on the page.
+                    renderImages(images);                    
+                }); 
             }
 
             function renderImages(model)
             {
                 // Get images 
                 var $imageRow = document.querySelectorAll('figure img');                
+                var $linkRow = document.querySelectorAll('figure a');                
 
                 $imageRow.forEach((image, i) =>
                 {
-                    image.src = model[i];
+                    // Simulate a delay in retrieving images.
+                    window.setTimeout(function() 
+                    {
+                        console.log("sleep" + i);                   
+
+                        image.src = model[i].link;
+                        image.title = model[i].user + ": " + model[i].description;
+                        image.parentElement.href = model[i].home;
+
+                        // Remove the loading spinner
+                        image.parentElement.parentElement.classList.remove("loader");
+                        image.parentElement.parentElement.classList.remove("is-loading");
+                    }, (Math.random() * 500) * (i+1));
+
                 })
             }
 
