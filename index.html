@@ -210,6 +210,9 @@
             // Load the image containers
             loadImages();
 
+            // Get an inital list of tasks
+            getTasks();
+
           
             /// -----------------------------------------------------------------------------------------------------------
 
@@ -265,11 +268,18 @@
             // Example of populating list using custom fake rest server
             async function getTasks()
             {
+                // Display loading spinner
+                var $taskList = document.getElementById('container');
+                $taskList.classList.add('loader');
+
+
                 // Retrieve list of Tasks from arbitrary data source.  When available, send tasks to Render Function.
                 const results = await fetchTasks().then(resp =>
                 {
                     renderTasks(resp.data);
                 });
+
+                $taskList.classList.remove('loader');
             }  
             
             function renderTasks(model)
@@ -300,7 +310,7 @@
                     var images = [];
                     
                     // Shrink the dataset down and grab only the fields we want.
-                    var subset = resp.data.results.slice(0, 10).forEach((item) => {
+                    var subset = resp.data.results.slice(0, 5).forEach((item) => {
                         const image = { "link" : item.urls.small, 
                                         "home" : item.links.html, 
                                         "description" : item.description ?? item.alt_description, 
