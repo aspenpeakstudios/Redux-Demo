@@ -23,6 +23,34 @@
             </div>
         </section>
 
+        <!-- Navigation -->
+        <Section>
+            <nav class="navbar is-transparent">
+                <div class="navbar-menu">
+                    <div class="navbar-start">
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <!-- Header Menu Dropdown-->
+                            <a class="navbar-link">
+                                Javascript30
+                            </a>                       
+
+                            <!-- Child Links -->
+                            <div class="navbar-dropdown">
+                                <a class="navbar-item" href="JS30L1-Drums/index.html">                                    
+                                    Drums                                    
+                                </a>
+                                <a class="navbar-item" href="JS30L2-Clock/index.html">                                    
+                                    Clock                                    
+                                </a>
+                                <hr class="navbar-divider">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </Section>
+
+
         <!-- Content -->
         <section class="section">          
 
@@ -270,7 +298,10 @@
             {
                 // Display loading spinner
                 var $taskList = document.getElementById('container');
-                $taskList.classList.add('loader');
+                if (!$taskList.hasChildNodes)
+                {
+                    $taskList.classList.add('loader');
+                }
 
 
                 // Retrieve list of Tasks from arbitrary data source.  When available, send tasks to Render Function.
@@ -345,7 +376,7 @@
                         // Remove the loading spinner
                         image.parentElement.parentElement.classList.remove("loader");
                         image.parentElement.parentElement.classList.remove("is-loading");
-                    }, (Math.random() * 500) * (i+1));
+                    }, (Math.random() * 2500) * (i+1));
 
                 })
             }
