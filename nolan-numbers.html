@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <title>Nolans Numbers</title>
+
+        <style>
+            html, body { font-size: 20px; }
+            input  { width: 25%; padding: 10px; margin: 10px;}
+            button { font-size: 40px; width:40px}
+        </style>
+    </head>
+
+    <body>
+        <h1>Nolans Numbers</h1>
+        <hr>
+        <input type="number" id="number1" placeholder="Number 1"/>
+        <input type="number" id="number2" placeholder="Number 2"/>
+        <button id="addButton">+</button>
+        <button id="subButton">-</button>
+
+        <hr>
+        <div>
+            <p id="results">None</p>
+        </div>
+
+        <script>
+            // Hook up the buttons to mouse
+            const addButton = document.querySelector("#addButton").addEventListener('click', addNumbers);
+            const subButton = document.querySelector("#subButton").addEventListener('click', subNumbers);
+
+            // Shortcuts to stuff on screen
+            const number1 = document.querySelector("#number1");
+            const number2 = document.querySelector("#number2");
+            const results = document.querySelector("#results");
+
+            // Instructions to add two numbers
+            function addNumbers() {
+                const result = parseInt(number1.value) + parseInt(number2.value);
+                results.innerHTML = result;
+
+                console.log("Add Numbers:" + number1.value + " + " + number2.value + " = " + result);
+            }
+
+            // Instructions to subtract two numbers
+            function subNumbers() {                
+                const result = parseInt(number1.value) - parseInt(number2.value);                
+                results.innerHTML = result;
+
+                console.log("Subtract Numbers:" + number1.value + " - " + number2.value + " = " + result);
+            }
+
+
+        </script>
+
+    </body>
+
+</html>
