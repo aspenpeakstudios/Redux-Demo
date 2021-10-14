@@ -12,7 +12,7 @@ async function fetchTasks()
 async function fetchImages()
 {
     const client_id = "av09GaKOAUKnW63ETkzEGg6gOiahgjuxP1F78MPYssk";
-    const category = "bears";
+    const category = "mountains";
     const url = "https://api.unsplash.com/search/photos?query=" + category + "&orientation=landscape&per_page=20&client_id=" + client_id;
 
     const response = await axios.get(url);

@@ -6,16 +6,20 @@
 </head>
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
+<button id="load" style="position: absolute; bottom: 0px; right:90%; padding: 0px 10px;">Load</button>
+<button id="rotate" style="position: absolute; bottom: 0px; right:50%; padding: 0px 10px;">Rotate</button>
+<button id="save" style="position: absolute; bottom: 0px; left:90%; padding: 0px 10px;">Save</button>
 
 <script>
 
 // Notes:
-https://medium.com/trabe/manipulating-images-using-the-canvas-api-98dc77352ddc
+// https://medium.com/trabe/manipulating-images-using-the-canvas-api-98dc77352ddc
 
+// Save Image:  https://weworkweplay.com/play/saving-html5-canvas-as-image/
 
-
-
-
+  const saveButton = document.querySelector('#save');
+  const loadButton = document.querySelector('#load');
+  const rotateButton = document.querySelector('#rotate');
   const canvas = document.querySelector('#draw');
   const ctx = canvas.getContext('2d');
   canvas.width = window.innerWidth;
@@ -36,10 +40,10 @@ https://medium.com/trabe/manipulating-images-using-the-canvas-api-98dc77352ddc
   let direction = true;
 
   
-
+  // Redraw the canvas, may draw a line if user is pressing a mouse button
   function draw(e) {
     if (!isDrawing) return; // Stop function from running when mouse is not down
-    console.log(e);
+    //console.log(e);
     
     ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;    
     ctx.beginPath();
@@ -63,22 +67,89 @@ https://medium.com/trabe/manipulating-images-using-the-canvas-api-98dc77352ddc
     }
     else {
       ctx.lineWidth--;
-    }
-    
+    }    
   }
 
+  // Handle save button click
+  save.addEventListener('click', function() {
+    console.log("Click");
+    var dataURL = canvas.toDataURL('image/png').replace("image/png", "image/octet-stream");    
+
+    //Notes:  https://stackoverflow.com/questions/10673122/how-to-save-canvas-as-an-image-with-canvas-todataurl
+    var link = document.createElement("a");
+    link.setAttribute("download", "saveimage.png");
+    link.setAttribute("href", dataURL);
+    link.click();
+    link.remove();
+   });
+
+  // Handle moose movement on canvas
   canvas.addEventListener('mousemove', draw);
+
+  // Handle mouse button press on canvas
   canvas.addEventListener('mousedown', (e) => { 
     isDrawing = true;
     lastX = e.offsetX;
     lastY = e.offsetY;
   });
+
+  // Handle mouse button release on canvas
   canvas.addEventListener('mouseup', () => 
   {
     isDrawing = false
     size = 1;
   });
+
+  // Handle scenario where mouse leaves the canvas
   canvas.addEventListener('mouseout', () => isDrawing = false);
+
+  // Handle scenario where user clicks Rotate button
+  rotate.addEventListener('click', function() {
+    console.log("Rotate Click");
+
+    // Save the canvas to a DATA URL first
+    var image = canvas.toDataURL('image/png');
+
+
+    ctx.clearRect(0,0, canvas.width, canvas.height);
+
+    // Save the unrotated context so we can restore it later.
+    ctx.save();
+
+    // Move to the center of the canvas
+    //ctx.translate(canvas.width/2, canvas.height/2);
+
+    // rotate the canvas
+    ctx.rotate(90 * Math.PI / 180);
+
+    // draw the image
+    // since the canvas is rotated, the image will also be rotated
+    loadImage(image);
+    //ctx.drawImage(image, 0,0);
+
+    // we're done with rotating so restore the unrotated canvas
+    //ctx.restore();
+  });
+
+  load.addEventListener('click', function() { loadImage(); });
+
+  // Load an image
+  function loadImage(imageSource) {
+    console.log(imageSource);
+    var image = new Image();
+    image.onload = function() { 
+      ctx.drawImage(image, -image.width/2, -image.height/2);      
+    }
+    if (imageSource === undefined)
+    {
+      image.src= 'sample-photo.jpg';    
+    }
+    else
+    {
+      image.src = imageSource;
+    }
+  }
+  
 
 </script>
 
