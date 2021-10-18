@@ -17,6 +17,11 @@
 
 // Save Image:  https://weworkweplay.com/play/saving-html5-canvas-as-image/
 
+// Game Tutorial:  https://www.w3schools.com/graphics/game_images.asp
+
+
+
+  let canvasObjects = [];
   const saveButton = document.querySelector('#save');
   const loadButton = document.querySelector('#load');
   const rotateButton = document.querySelector('#rotate');
@@ -39,12 +44,37 @@
   let hue = 0;
   let direction = true;
 
+  function component(width, height, color, x, y, type) {
+    this.type = type;
+    if (type == "image") {
+      this.image = new Image();      
+      this.image.src = color;
+    }
+    this.width = width;
+    this.height = height;
+    this.speedX = 0;
+    this.speedY = 0;
+    this.x = x;
+    this.y = y;
+    this.update = function(canvasContext) {
+      if (type == "image") {
+        canvasContext.drawImage(this.image, this.x, this.y, this.width, this.height);
+      }
+      else {
+        canvasContext.fillStyle = color;
+        canvasContext.fillRect(this.x, this.y, this.width, this.height);
+      }
+    }
+  }
+
   
   // Redraw the canvas, may draw a line if user is pressing a mouse button
-  function draw(e) {
+  function draw(e) {    
     if (!isDrawing) return; // Stop function from running when mouse is not down
     //console.log(e);
     
+    console.log("drawing");
+
     ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;    
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
@@ -68,6 +98,11 @@
     else {
       ctx.lineWidth--;
     }    
+  }
+
+  function redrawCanvas() {
+    ctx.clearRect(0,0, canvas.width, canvas.height);    
+    canvasObjects.forEach(component => { component.update(ctx); })
   }
 
   // Handle save button click
@@ -131,12 +166,19 @@
     //ctx.restore();
   });
 
-  load.addEventListener('click', function() { loadImage(); });
+  load.addEventListener('click', function() { loadImage("sample-photo.jpg"); });
 
   // Load an image
   function loadImage(imageSource) {
     console.log(imageSource);
-    var image = new Image();
+
+    newImage = new component(700, 600, imageSource, 0, 0, "image");
+    canvasObjects.push(newImage);
+
+    window.setTimeout(redrawCanvas, 2000);
+
+    
+    /* var image = new Image();
     image.onload = function() { 
       ctx.drawImage(image, -image.width/2, -image.height/2);      
     }
@@ -147,7 +189,7 @@
     else
     {
       image.src = imageSource;
-    }
+    } */
   }
   
 
