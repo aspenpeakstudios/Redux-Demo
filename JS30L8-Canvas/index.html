@@ -51,14 +51,18 @@
       this.image.src = color;
     }
     this.width = width;
-    this.height = height;
-    this.speedX = 0;
-    this.speedY = 0;
+    this.height = height;   
     this.x = x;
     this.y = y;
     this.update = function(canvasContext) {
       if (type == "image") {
         canvasContext.drawImage(this.image, this.x, this.y, this.width, this.height);
+      }
+      else if (type == "line") {
+        ctx.beginPath();
+        ctx.moveTo(width, height);
+        ctx.lineTo(x, y);
+        ctx.stroke();
       }
       else {
         canvasContext.fillStyle = color;
@@ -75,11 +79,15 @@
     
     console.log("drawing");
 
-    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;    
+    newLine = new component(lastX, lastY, "red", e.offsetX, e.offsetY, "line");
+    canvasObjects.push(newLine);
+    redrawCanvas();
+
+    /* ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;    
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(e.offsetX, e.offsetY);
-    ctx.stroke();
+    ctx.stroke(); */
 
     lastX = e.offsetX;
     lastY = e.offsetY;
