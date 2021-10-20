@@ -3,12 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>HTML5 Canvas</title>
+  <style>
+    body { padding: 20px; }
+    canvas { width: 100%; height: 100%; border: 1px solid green; }    
+    .flex-column { display: flex; flex-direction: column; justify-content: space-between; }
+    .flex-row { display: flex; flex-direction: row; justify-content: space-between; }
+    .box { border: 1px solid black; box-shadow: 0  0 10px #444; }
+    .short-box { height: 400px;}
+    
+  </style>
 </head>
 <body>
-<canvas id="draw" width="800" height="800"></canvas>
-<button id="load" style="position: absolute; bottom: 0px; right:90%; padding: 0px 10px;">Load</button>
-<button id="rotate" style="position: absolute; bottom: 0px; right:50%; padding: 0px 10px;">Rotate</button>
-<button id="save" style="position: absolute; bottom: 0px; left:90%; padding: 0px 10px;">Save</button>
+  <div id="canvasContainer" class="flex box short-box" >
+    <canvas id="draw"></canvas>
+  </div>
+  <div class="flex-row box">
+    <button id="load" >Load</button>
+    <button id="rotate">Rotate</button>
+    <button id="save">Save</button>
+  </div>
 
 <script>
 
@@ -27,8 +40,10 @@
   const rotateButton = document.querySelector('#rotate');
   const canvas = document.querySelector('#draw');
   const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  const container = document.querySelector("#canvasContainer");
+
+  canvas.width = container.offsetWidth;  //window.innerWidth;
+  canvas.height = container.offsetHeight;  //window.innerHeight;
 
   ctx.strokeStyle = '#BADA55';
   ctx.lineJoin = 'round';
@@ -91,7 +106,8 @@
 
     lastX = e.offsetX;
     lastY = e.offsetY;
-    hue++;
+    
+    /* hue++;
     if (hue > 360) 
     {
       hue = 0;
@@ -105,7 +121,7 @@
     }
     else {
       ctx.lineWidth--;
-    }    
+    }     */
   }
 
   function redrawCanvas() {
@@ -181,7 +197,7 @@
     console.log(imageSource);
 
     newImage = new component(700, 600, imageSource, 0, 0, "image");
-    canvasObjects.push(newImage);
+    canvasObjects.unshift(newImage);  // Add image to beginning of array
 
     window.setTimeout(redrawCanvas, 2000);
 
