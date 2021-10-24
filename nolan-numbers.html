@@ -16,7 +16,7 @@
         <input type="number" id="number2" placeholder="Number 2"/>
         <button id="addButton">+</button>
         <button id="subButton">-</button>
-
+        <button id="multButton">*</button>
         <hr>
         <div>
             <p id="results">None</p>
@@ -26,6 +26,7 @@
             // Hook up the buttons to mouse
             const addButton = document.querySelector("#addButton").addEventListener('click', addNumbers);
             const subButton = document.querySelector("#subButton").addEventListener('click', subNumbers);
+            const multButton = document.querySelector("#multButton").addEventListener('click', multNumbers);
 
             // Shortcuts to stuff on screen
             const number1 = document.querySelector("#number1");
@@ -46,6 +47,12 @@
                 results.innerHTML = result;
 
                 console.log("Subtract Numbers:" + number1.value + " - " + number2.value + " = " + result);
+            }
+
+            // Instructions to multiply two numbers
+            function multNumbers() {
+                const result = parseInt(number1.value) * parseInt(number2. value);
+                results.innerHTML = result;
             }
 
 
