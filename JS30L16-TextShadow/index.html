@@ -6,12 +6,27 @@
 </head>
 <body>
 
+  <div class="progress-container">
+    <div class="progress">
+      <div class="progress__filled"></div>
+    </div>
+  </div>
+
+  <div class="hero">  
+    <h1 contenteditable class="sound-source">🔥WOAH!</h1>
+  </div>
+
   <div class="hero">
-    <h1 contenteditable>🔥WOAH!</h1>
+    <h1 contenteditable class="sound-source">🔥WOAH!</h1>
+  </div>
+
+  <div class="hero">
+    <h1 contenteditable class="sound-source">🔥WOAH!</h1>
   </div>
 
   <div>
-    <audio src="Tartanic-BriefcaseNo1.mp3"></audio>
+    <!-- <audio src="Tartanic-BriefcaseNo1.mp3"></audio> -->
+    <audio src="IconaPop-ILoveIt.mp3"></audio>
   </div>
 
   <style>
@@ -25,7 +40,7 @@
   }
 
   .hero {
-    min-height: 100vh;
+    min-height: 70vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -42,6 +57,29 @@
 
     transition: all 0.25s;
   }
+
+  .progress-container {
+    position: fixed;
+    width: 100vw;
+  }
+
+  .progress {
+  flex: 10;
+  position: relative;
+  display: flex;
+  flex-basis: 100%;
+  height: 5px;
+  transition: height 0.3s;
+  background: rgba(0,0,0,0.5);
+  cursor: ew-resize;
+}
+
+.progress__filled {
+  width: 50%;
+  background: #ffc600;
+  flex: 0;
+  flex-basis: 50%;
+}
   </style>
 
 <script>
@@ -74,34 +112,82 @@
     // text.style.textShadow = `10px 10px 0 red`;
     text.style.textShadow = `${xWalk}px ${yWalk}px 0 rgba(128, 128, 128, 0.5)`;
 
+  }
 
+  function dopplerize(e) {
     //// AUDIO
     /// Goal:  Audio volume should increase as mouse moves closer to element.  Volume should not be heard
     ///        when more than 300 pixels away.
-    const vStep = 0.1;
-    const maxRange = 200;
-    const distanceToTarget = Math.abs(text.offsetTop + (text.offsetHeight/2) - y);
+
+    const progress = document.querySelector(".progress");
+    const progressBar = progress.querySelector(".progress__filled");
+
+    const soundSources = document.querySelectorAll(".sound-source");    
+    const vStep = 0.5;
+    const maxRange = 365;
     let newVolume = 0;
-    if (distanceToTarget < maxRange)
-    {
-      newVolume = (1/(distanceToTarget/maxRange)) * vStep;      
-      //console.log(newVolume);           
-    }   
-    console.log("V: " + newVolume + ", offsetTop: " + text.offsetTop + ", y: " + y + ", D to Target: " + distanceToTarget);
-    audio.volume = newVolume;  
-    
+
+    // Loop through all the sound sources on the page and calculate the loudest volume based on distance
+    // from source to mouse.
+    soundSources.forEach(element => {     
+      let y = e.offsetY;  
+      if (this != e.target) {
+        y += e.target.offsetTop;  // Needed or Y values will reset when mouse in over target element.
+      }
+      
+      const distanceToTarget = Math.abs(element.offsetTop + (element.offsetHeight/2) - y);    
+     
+      // Only set a volume if target is within range.
+      if (distanceToTarget < maxRange)
+      {
+        let distance = normalize(distanceToTarget, 0, maxRange); 
+        volume = invertedFraction(distance, maxRange) * vStep;  
+        
+        // 
+        if (volume > newVolume) newVolume = volume;
+      }             
+    });
+
+    // Set the volume based on the loudest volume found.
+    audio.volume = newVolume;        
     if (audio.paused) {
       audio.play();
     }
+
+    // Update the progress bar
+    let percent = (newVolume/vStep) * 100;
+    progressBar.style.flexBasis = `${percent}%`;
+    //let percent = (video.currentTime / video.duration) * 100;
+    //progressBar.style.flexBasis = `${percent}%`;
   }
 
-  hero.addEventListener("mousemove", updateShadow);
-  //window.setTimeout(() => audio.play(), 1000);
+  // Takes a number and makes sure it falls within a predefined range.
+  // ie. if 315 is passed in and the max is 300, then 300 is returned.
+  function normalize(number, min, max) {
+    let result = number;
+    if (result > max) result = max;
+    if (result < min) result = min;
+    return result;
+  }
 
-  ////// TODO /////////////
-  // look into proper math function to return 0-1 based on distance from object.  
-  // currently throwing exceptions when on target element, why?
+  // Takes a number and a size range and converts the number to a percentage
+  // and then inverts that percentage.
+  // ie.  like a reverse progress bar.
+  function invertedFraction(number, range) {
+    // Divide to get a fraction
+    let result = number / range;
 
+    // Invert the result
+    result -= 1;
+
+    // Return a positive number
+    return Math.abs(result);
+  }
+
+  hero.addEventListener("mousemove", updateShadow);  
+  document.addEventListener("mousemove", dopplerize);  
+  //document.addEventListener("scroll", dopplerize);    // How to handle scroll position?
+  
 </script>
 
 
