@@ -10,6 +10,10 @@
     <h1 contenteditable>🔥WOAH!</h1>
   </div>
 
+  <div>
+    <audio src="Tartanic-BriefcaseNo1.mp3"></audio>
+  </div>
+
   <style>
   html {
     color: black;
@@ -43,6 +47,7 @@
 <script>
   const hero = document.querySelector(".hero");
   const text = hero.querySelector("h1");
+  const audio = document.querySelector("audio");
 
   function updateShadow(e) {
     //const { offsetWidth: width, offsetHeight: height} = hero;
@@ -59,7 +64,7 @@
       y += e.target.offsetTop;
     }
 
-    console.log(x + ", " + y);
+    //console.log(x + ", " + y);
 
     const walk = 20;
 
@@ -68,9 +73,34 @@
 
     // text.style.textShadow = `10px 10px 0 red`;
     text.style.textShadow = `${xWalk}px ${yWalk}px 0 rgba(128, 128, 128, 0.5)`;
+
+
+    //// AUDIO
+    /// Goal:  Audio volume should increase as mouse moves closer to element.  Volume should not be heard
+    ///        when more than 300 pixels away.
+    const vStep = 0.1;
+    const maxRange = 200;
+    const distanceToTarget = Math.abs(text.offsetTop + (text.offsetHeight/2) - y);
+    let newVolume = 0;
+    if (distanceToTarget < maxRange)
+    {
+      newVolume = (1/(distanceToTarget/maxRange)) * vStep;      
+      //console.log(newVolume);           
+    }   
+    console.log("V: " + newVolume + ", offsetTop: " + text.offsetTop + ", y: " + y + ", D to Target: " + distanceToTarget);
+    audio.volume = newVolume;  
+    
+    if (audio.paused) {
+      audio.play();
+    }
   }
 
   hero.addEventListener("mousemove", updateShadow);
+  //window.setTimeout(() => audio.play(), 1000);
+
+  ////// TODO /////////////
+  // look into proper math function to return 0-1 based on distance from object.  
+  // currently throwing exceptions when on target element, why?
 
 </script>
 
