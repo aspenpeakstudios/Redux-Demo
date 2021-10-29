@@ -26,9 +26,61 @@
   </div>
 
 <script>
+  /// DOM elements
   const addItems = document.querySelector('.add-items');
-  const itemsList = document.querySelector('.plates');
-  const items = [];
+  const itemsList = document.querySelector('.plates');  
+  const items = JSON.parse(localStorage.getItem('items')) || [];
+
+  /// Functions
+
+  // create a set of <li> tags for the items in the array
+  function renderItemList(items = [], listContainer) {      
+      const itemsHtml = items.map( (item, i) => {
+        return `
+          <li>
+            <input type="checkbox" data-index=${i} id="item${i}" ${item.done ? 'checked' : ''}></input>
+            <label for="item${i}">${item.text}</label>            
+          </li>
+          `;
+      }).join('');
+      
+      listContainer.innerHTML = itemsHtml; 
+  }
+
+  // handle form submit
+  function submitItem(e) {
+    e.preventDefault();
+
+    const text = (this.querySelector('[name=item]')).value;
+    const item = { 
+      text, 
+      done: false
+    };
+
+    items.push(item);   
+    renderItemList(items, itemsList); 
+    localStorage.setItem('items', JSON.stringify(items));
+    this.reset();
+  }
+
+  // Handle checking the checkbox
+  function toggleDone(e) {
+    if (!e.target.matches('input')) return; // Skip unless its an input
+
+    const el = e.target;
+    const index = el.dataset.index;
+    items[index].done = !items[index].done;
+    localStorage.setItem('items', JSON.stringify(items));
+    renderItemList(items, itemsList); 
+    
+  }
+
+  /// Event Handlers  
+  addItems.addEventListener('submit', submitItem);
+  itemsList.addEventListener('click', toggleDone);
+
+  /// On load functions to run
+  renderItemList(items, itemsList); 
 
 </script>
 
