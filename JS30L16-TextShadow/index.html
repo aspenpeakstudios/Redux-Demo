@@ -36,7 +36,8 @@
   }
 
   body {
-    margin: 0;    
+    margin: 0;   
+    background-image: linear-gradient(-170deg, #2376ae 0%, #c16ecf 100%) 
   }
 
   .hero {
@@ -123,8 +124,8 @@
     const progressBar = progress.querySelector(".progress__filled");
 
     const soundSources = document.querySelectorAll(".sound-source");    
-    const vStep = 0.5;
-    const maxRange = 365;
+    const vStep = 0.1;
+    const maxRange = 150;
     let newVolume = 0;
 
     // Loop through all the sound sources on the page and calculate the loudest volume based on distance
