@@ -1,29 +1,33 @@
 <html>
     <head>
-        <title>Grids</title>
         <style>
-            html, body { margin: 0; padding: 2px;}
-            table { border: 0px solid #ccc; width:99%; height: 100%; border-spacing: 0; position: fixed;}
-            td { border: 1px solid green; }
+        img  { grid-area: img; max-width: 200px; max-height: 200px; }
+        header { grid-area: header; border:1px solid #ccc; }
+        main { grid-area: main; border: 1px solid #ccc;}
+        aside { grid-area: aside; border: 1px solid #ccc;}
+        .ad { grid-area: ad; border: 1px solid #ccc;} 
+
+        body {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            grid-template-rows: auto auto auto;
+
+            grid-template-areas: 
+            ".            header              img"
+            "aside        main                ."
+            ".            main                ad";
+        }
         </style>
     </head>
+
     <body>
-
-        <!-- Tables are easy but need to be symetrical (each row has same number of columns)-->
-        <table>
-            <tr>
-                <td></td><td></td><td></td>
-            </tr>
-            <tr>
-                <td></td><td></td><td></td>
-            </tr>
-            <tr>
-                <td></td><td></td><td></td>
-            </tr>
-        </table>
-
-        <!-- Try CSS Grid or Flexbox-->
-        <!-- How to make a 3x3 x 3x5 x 3x3 grid? -->
-
+        <img src="doorway.jpg"></img>
+        <header>
+            <h1>Vanish for Good</h1>
+            <p>A good cover can be essential to your new life</p>
+        </header>
+        <main>This is the main section</main>
+        <aside>Aside</aside>
+        <div class="ad">Ad</div>
     </body>
 </html>
