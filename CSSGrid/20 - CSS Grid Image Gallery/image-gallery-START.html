@@ -51,9 +51,78 @@
       border: 0;
     }
 
-    .gallery {}
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 100px);
+      grid-auto-rows: 100px;
+      grid-auto-flow: dense;
+    }
 
+    .item {
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;      
+    }
 
+    .item img {
+      width: 100%;
+      height: 100%;
+      grid-column: 1 / -1;
+      grid-row: 1 / -1;
+      object-fit: cover;
+    }
+
+    .item__overlay {
+      background: #ffc60032;
+      grid-column: 1 / -1;
+      grid-row: 1 / -1;
+      position: relative;
+      display: grid;
+      justify-content: center;
+      align-items: center;
+      transform: translateY(100%);
+      transition: 0.3s all;
+    }
+
+    .item__overlay button {
+      grid-column: 1 / -1;
+      grid-row: 1 / -1;      
+      background: rgba(0, 0, 0, 0.7);
+      text-transform: uppercase;
+      border: 2px solid white;
+      color: white;
+      padding: 10px;
+    }
+
+    .item:hover .item__overlay {
+      transform: translateY(0);
+    }
+
+    .item.h2 {
+      grid-column: span 2;
+    }
+
+    .item.h3 {
+      grid-column: span 3;
+    }
+
+    .item.h4 {
+      grid-column: span 4;
+    }
+
+    .item.v2 {
+      grid-row: span 2;
+    }
+
+    .item.v3 {
+      grid-row: span 3;
+    }
+
+    .item.v4 {
+      grid-row: span 4;
+    }
+   
 
     .overlay {
       position: fixed;
@@ -82,6 +151,38 @@
   </style>
 
   <script>
+    // Get elements
+    const gallery = document.querySelector('.gallery');
+    const overlay = document.querySelector('.overlay');
+    const button = overlay.querySelector('.close');
+    
+    // Functions
+    function randomNumber(limit) {
+      return Math.floor(Math.random() * limit) + 1;
+    }
+
+    function generateHtml([h, v]) {
+      return `
+        <div class='item v${v} h${h}'>
+          <img src="images/${randomNumber(12)}.jpg">
+          <div class='item__overlay'>
+            <button>View →</button>
+          </div>
+        </div>
+      `;
+    }
+
+    // Create array of data
+    const data = Array.from({ length: 50 }, () =>[randomNumber(4), randomNumber(4)])
+                      .concat([[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],
+                              [1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],
+                              [1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1],[1,1]
+                    ]);
+
+    //console.log(data);
+
+    gallery.innerHTML = data.map(generateHtml).join('');
+
   </script>
 </body>
 
