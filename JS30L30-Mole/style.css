@@ -67,3 +67,45 @@ h1 {
 .hole.up .mole {
   top: 0;
 }
+
+
+.flying-mole {
+  position:fixed; 
+  animation: fly-away 0.3s linear;  
+  transform-origin: center;
+}
+
+@keyframes fly-away {    
+  100% {
+    transform: scale(3) rotate(420deg);
+    opacity: 0;      
+  }
+}
+
+
+#mouse-coords {
+  position: fixed;
+  top: 0;
+  left: 0;
+  font-size:2em;
+}
+
+.bottom-row { 
+  display:flex;
+  justify-content: center;      
+  margin-top: 60px;
+}
+
+.bottom-row button { 
+  transform: scale(2); 
+}
+
+
+.instructions {
+  font-size: 2em;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  text-align: center;
+}
+
+
