@@ -6,20 +6,36 @@
             html, body { font-size: 20px; }
             input  { width: 25%; padding: 10px; margin: 10px;}
             button { font-size: 40px; width:40px}
+
+            body { background: url('mountains.jpg')}
+
+            .calculator-container {
+                margin: 100px;
+                padding: 100px;
+                border: 1px solid black;
+                box-shadow: 0 0 40px #444;
+
+                background: rgba(255,255,255, 0.9)
+            }
         </style>
     </head>
 
     <body>
-        <h1>Nolans Numbers</h1>
-        <hr>
-        <input type="number" id="number1" placeholder="Number 1"/>
-        <input type="number" id="number2" placeholder="Number 2"/>
-        <button id="addButton">+</button>
-        <button id="subButton">-</button>
-        <button id="multButton">*</button>
-        <hr>
-        <div>
-            <p id="results">None</p>
+
+        <!-- Group fields together -->
+        <div class='calculator-container'>
+            <h1>Nolans Numbers</h1>
+            <hr>
+            <input type="number" id="number1" placeholder="Number 1"/>
+            <input type="number" id="number2" placeholder="Number 2"/>
+            <button id="addButton">+</button>
+            <button id="subButton">-</button>
+            <button id="multButton">*</button>
+            <button id="diviButton">/</button>
+            <hr>
+            <div>
+                <p id="results">None</p>
+            </div>
         </div>
 
         <script>
@@ -27,32 +43,62 @@
             const addButton = document.querySelector("#addButton").addEventListener('click', addNumbers);
             const subButton = document.querySelector("#subButton").addEventListener('click', subNumbers);
             const multButton = document.querySelector("#multButton").addEventListener('click', multNumbers);
+            const diviButton = document.querySelector("#diviButton").addEventListener('click', diviNumbers);
 
             // Shortcuts to stuff on screen
             const number1 = document.querySelector("#number1");
             const number2 = document.querySelector("#number2");
             const results = document.querySelector("#results");
 
+            results.innerHTML="";
+
             // Instructions to add two numbers
             function addNumbers() {
-                const result = parseInt(number1.value) + parseInt(number2.value);
-                results.innerHTML = result;
-
-                console.log("Add Numbers:" + number1.value + " + " + number2.value + " = " + result);
+                results.innerHTML="";
+                if (checkInputs()) {
+                    const result = parseInt(number1.value) + parseInt(number2.value);
+                   results.innerHTML = result;
+                    console.log("Add Numbers:" + number1.value + " + " + number2.value + " = " + result);
+                }
             }
 
             // Instructions to subtract two numbers
-            function subNumbers() {                
+            function subNumbers() { 
+                results.innerHTML="";
+                if (checkInputs()) {               
                 const result = parseInt(number1.value) - parseInt(number2.value);                
                 results.innerHTML = result;
-
                 console.log("Subtract Numbers:" + number1.value + " - " + number2.value + " = " + result);
-            }
+                }
+            } 
+
 
             // Instructions to multiply two numbers
             function multNumbers() {
-                const result = parseInt(number1.value) * parseInt(number2. value);
+                results.innerHTML=""; 
+                if (checkInputs())   {
+                const result = parseInt(number1.value) * parseInt(number2.value);
                 results.innerHTML = result;
+                }
+            }
+
+            function diviNumbers() {
+                results.innerHTML="";
+                if (checkInputs())   {
+               const result = (number1.value) / (number2.value);
+               results.innerHTML = result;
+                }
+            }
+
+            function checkInputs() {
+                let errorMsg1 = "You have to pick two numbers first.";  
+                console.log("number1: ", number1.value);
+                console.log("number 2: ", number2.value);              
+                if (number1.value == "" || number2.value == "") {
+                    alert(errorMsg1);
+                    return false;
+                }        
+                return true;  
             }
 
 
